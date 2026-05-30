@@ -1,0 +1,6 @@
+{
+  "name": "NesiNezz's Website connection",
+  "description": "Interactive cyber-secure database styled gaming and programming portfolio, featuring loading screen database animations, music player, real-time clock, friends list cards, connection indicators, and furry-inspired responsive user dashboards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

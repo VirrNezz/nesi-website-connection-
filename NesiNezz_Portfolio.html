@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NesiNezz's Website connection - Standalone</title>
+  <!-- Tailwind CSS v3/v4 Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Font - Inter & Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', 'JetBrains Mono', sans-serif;
+      background-color: #03070d;
+      color: #cbd5e1;
+      margin: 0;
+      padding: 0;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    input[type="range"] {
+      accent-color: #06e3ff;
+    }
+    /* Simple retro animations placeholder */
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 2.5s infinite;
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: rgba(6, 182, 212, 0.4);
+      border-radius: 4px;
+    }
+
+    /* Fallback styles if Tailwind Play CDN is blocked/offline in browser */
+    nav, header, footer, section, main, table, tbody, tr, th, td, div, button {
+      box-sizing: border-box;
+    }
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .grid { display: grid; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .col-span-1 { grid-column: span 1 / span 1; }
+    .w-full { width: 100%; }
+    .shrink-0 { flex-shrink: 0; }
+    
+    @media (min-width: 768px) {
+      .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .md\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+      .md\:flex-row { flex-direction: row; }
+      .md\:col-span-2 { grid-column: span 2 / span 2; }
+      .md\:col-span-4 { grid-column: span 4 / span 4; }
+      .md\:col-span-8 { grid-column: span 8 / span 8; }
+    }
+    @media (min-width: 1024px) {
+      .lg\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+      .lg\:col-span-3 { grid-column: span 3 / span 3; }
+      .lg\:col-span-9 { grid-column: span 9 / span 9; }
+    }
+    
+    .p-2 { padding: 0.5rem; }
+    .p-2\.5 { padding: 0.625rem; }
+    .p-3 { padding: 0.75rem; }
+    .p-4 { padding: 1rem; }
+    .p-5 { padding: 1.25rem; }
+    .p-6 { padding: 1.5rem; }
+    .pt-1 { padding-top: 0.25rem; }
+    .pt-2 { padding-top: 0.5rem; }
+    .pt-3 { padding-top: 0.75rem; }
+    .pt-4 { padding-top: 1rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mb-1 { margin-bottom: 0.25rem; }
+    
+    .rounded { border-radius: 0.25rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-full { border-radius: 9999px; }
+    .border { border: 1px solid rgba(255, 255, 255, 0.1); }
+    
+    .bg-neutral-950 { background-color: #0a0a0a; }
+    .bg-neutral-950\/80 { background-color: rgba(10, 10, 10, 0.8); }
+    .bg-neutral-900 { background-color: #171717; }
+    .bg-neutral-900\/40 { background-color: rgba(23, 23, 23, 0.4); }
+    .bg-black\/20 { background-color: rgba(0, 0, 0, 0.2); }
+    .bg-black\/40 { background-color: rgba(0, 0, 0, 0.4); }
+    .bg-cyan-950\/50 { background-color: rgba(8, 47, 55, 0.5); }
+    
+    .text-white { color: #ffffff; }
+    .text-cyan-400 { color: #22d3ee; }
+    .text-[#06e3ff] { color: #06e3ff; }
+    .text-amber-400 { color: #fbbf24; }
+    .text-pink-500 { color: #ec4899; }
+    .text-slate-300 { color: #cbd5e1; }
+    .text-slate-400 { color: #94a3b8; }
+    .text-neutral-400 { color: #a3a3a3; }
+    .text-neutral-500 { color: #737373; }
+    
+    .text-xs { font-size: 0.75rem; }
+    .text-sm { font-size: 0.875rem; }
+    .text-base { font-size: 1rem; }
+    .text-lg { font-size: 1.125rem; }
+    .font-bold { font-weight: 700; }
+    .uppercase { text-transform: uppercase; }
+    .text-center { text-align: center; }
+  </style>
+</head>
+<body class="selection:bg-cyan-500/30 selection:text-white min-h-screen relative bg-[#03070d]">
+
+  <!-- STANDALONE JS DATABASE CONFIGURATION -->
+  <div id="standalone-root" class="min-h-screen relative flex flex-col justify-between max-w-7xl mx-auto p-3 md:p-6 gap-4"></div>
+
+  <!-- React 18 Production Bundle CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    const PLAYLIST = [
+      {
+        title: "Vapor Retro Database Loop",
+        artist: "Synthwave Division",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+      },
+      {
+        title: "Cybernetic Horizon Core",
+        artist: "Hyperion Beats",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+      },
+      {
+        title: "Deus Ex Machine Lofi",
+        artist: "Neon Furry Protocol",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
+      }
+    ];
+
+    const FRIENDS_LIST = [
+      {
+        id: 'f1',
+        name: 'Pink Salsabila Layla (Layla)',
+        species: 'Hybrid Wolf x Dragon',
+        avatarColor: 'bg-pink-500/20 text-pink-400',
+        type: 'standard',
+        traits: 'Warna pink, ada dua pasang tanduk putih, corak ungu di pipi, pake hoodie & baggy jeans, ekor mirip charmander tapi bulu pink dengan ujung ungu.',
+        detailedBio: 'Layla adalah hibrida naga serigala dengan temperamen ceria yang dominan berwarna pink lembut. Memiliki dua pasang tanduk putih elegan dan semburat ungu di pipi yang melengkapi hoodie kesayangannya.',
+        socials: [
+          { label: 'Instagram', url: 'https://www.instagram.com/rezkya_35?igsh=MW84b2xnZXJjemh2bA==', platform: 'instagram', color: 'bg-gradient-to-tr from-purple-500 to-pink-500' }
+        ]
+      },
+      {
+        id: 'f2',
+        name: 'Hieronimus Lidon',
+        species: 'Hibrida Singa & Smilodon',
+        avatarColor: 'bg-amber-600/20 text-amber-400',
+        type: 'standard',
+        traits: 'Warna bulu coklat, coklat muda & cream. Hidung pink. Mata kiri biru, mata kanan coklat. Suka coklat, pisang, & apel.',
+        detailedBio: 'Lidon memadukan keanggunan singa modern dengan kegagahan smilodon purba. Keunikan warna mata heterochromia ganda membuatnya menonjol di setiap database rujukan.',
+        socials: [
+          { label: 'Instagram', url: 'https://www.instagram.com/hieronimuslidon?igsh=NWx0a3RvMHVrMzJ5', platform: 'instagram', color: 'bg-gradient-to-tr from-purple-500 to-pink-500' }
+        ]
+      },
+      {
+        id: 'f3',
+        name: 'Minthy',
+        species: 'Hybrid Wolf Inu',
+        avatarColor: 'bg-[#06e3ff]/20 text-[#06e3ff]',
+        type: 'standard',
+        traits: 'Bulu biru putih, kacamata pilot coklat, mata coklat berekspresi tegas. Sweater navy kerah coklat & sepatu Wallace.',
+        detailedBio: 'Minthy memiliki gaya petualang udara yang kental dengan kacamata penerbang retro dan sweater tebal navy coklat, siap mengendalikan kemudi kapan saja.',
+        socials: [
+          { label: 'Instagram', url: 'https://www.instagram.com/iam.minthy?igsh=dmhkNTZ4MnpyYWI2', platform: 'instagram', color: 'bg-gradient-to-tr from-purple-500 to-pink-500' }
+        ]
+      },
+      {
+        id: 'f4',
+        name: 'Rocque',
+        species: 'Naga Kemono',
+        avatarColor: 'bg-cyan-500/20 text-cyan-400',
+        type: 'standard',
+        traits: 'Tanduk dua, rambut biru, telinga biru tua (ujung oren), tato << di pipi kiri. Makanan favorit: cheeseburger & kentang goreng.',
+        detailedBio: 'Rocque adalah naga kemono yang berkepribadian hangat. Selalu membawa keceriaan dan menyukai kudapan barat di sela-sela waktu santainya.',
+        socials: [
+          { label: 'Instagram', url: 'https://www.instagram.com/furry_rocque?igsh=bmoyZjA3ZDg1dnF2', platform: 'instagram', color: 'bg-gradient-to-tr from-purple-500 to-pink-500' }
+        ]
+      },
+      {
+        id: 'f5',
+        name: 'Kaiishou Shiinarii (Shii)',
+        species: 'Orange Dragon Kemono',
+        avatarColor: 'bg-orange-500/20 text-orange-400',
+        type: 'standard',
+        traits: 'Outfit: Kacamata bulat & Jas putih lengkap. Prestasi: Naga termuda yang menyandang gelar The King of Pengendali Saham pertama.',
+        detailedBio: 'Kaiishou (Kaiishii) adalah naga jenius bidang finansial dan analisis pasar modal global. Hadir rapi menggunakan setelan jas putih perlambang integritas absolut.',
+        socials: [
+          { label: 'Instagram', url: 'https://www.instagram.com/shiiwashere_?igsh=MWoyaG01Y3J4cDZ5MA==', platform: 'instagram', color: 'bg-gradient-to-tr from-purple-500 to-pink-500' }
+        ]
+      },
+      {
+        id: 'f6',
+        name: 'Malvin Relz Harry',
+        species: 'Wolf',
+        avatarColor: 'bg-indigo-500/20 text-indigo-300',
+        type: 'standard',
+        traits: 'Serigala hitam-putih dengan aksen pola siber biru di ujung fur, serta tanda bintang di bahu lengan sebagai ciri khas utama.',
+        detailedBio: 'Malvin adalah serigala penjaga database dengan penanda bintang astral di bahu kirinya, memancarkan kepemimpinan kuat.',
+        socials: [
+          { label: 'Instagram', url: 'https://www.instagram.com/malvinthefurr?igsh=MThtMjBkZGozeTk1Ng==', platform: 'instagram', color: 'bg-gradient-to-tr from-purple-500 to-pink-500' }
+        ]
+      },
+      {
+        id: 'f7',
+        name: 'Kairu Xhintaka',
+        species: 'Rubah Kitsune',
+        avatarColor: 'bg-neutral-800 text-rose-400',
+        type: 'standard',
+        traits: 'Rambut putih messy, mata merah tatapan tajam, telinga rubah putih aksen merah. Atasan hitam oversized, syal/masker mulut & celana putih.',
+        detailedBio: 'Kairu mewakili legenda rubah berekor sembilan dengan palet warna hitam putih serta aksen merah tajam di setiap anyaman syalnya.',
+        socials: [
+          { label: 'Instagram', url: 'https://www.instagram.com/kairu_xhintaka?igsh=MTc5YjJ1Mjc4MXppcg==', platform: 'instagram', color: 'bg-gradient-to-tr from-purple-500 to-pink-500' }
+        ]
+      },
+      {
+        id: 'f8',
+        name: 'Lewis Welby',
+        species: 'Kemono Rubah',
+        avatarColor: 'bg-rose-500/25 text-red-400',
+        type: 'standard',
+        traits: 'Rubah warna merah-biru bertangan merah, badan twink menawan. Suka membaca antologi fiksi & menggoda tuannya dengan candaan cerdas.',
+        detailedBio: 'Lewis adalah sosok rubah berpendidikan tinggi yang piawai membalikkan argumen berkat kebiasaan gemar melahap buku di ruang perpustakaan.',
+        socials: [
+          { label: 'TikTok', url: 'https://www.tiktok.com/@fcthelewis0?is_from_webapp=1&sender_device=pc', platform: 'tiktok', color: 'bg-neutral-900' }
+        ]
+      },
+      {
+        id: 'f9',
+        name: 'Dreadsdensetsu',
+        species: 'Fennec Fox',
+        avatarColor: 'bg-yellow-500/20 text-yellow-300',
+        type: 'standard',
+        traits: 'Morfologi rubah fennec kuning-putih berpola putih di tiap ujung telapak tangan, kaki, & ekor. Sepasang mata jernih berwarna biru langit.',
+        detailedBio: 'Dreadsdensetsu menyukai iklim hangat dan memiliki indra rungu siber yang sangat peka terhadap gangguan kebisingan terminal server.',
+        socials: [
+          { label: 'Instagram', url: 'https://www.instagram.com/dreadsdensetsu?igsh=NjIzMmZtMnR4Z2Fz', platform: 'instagram', color: 'bg-gradient-to-tr from-purple-500 to-pink-500' }
+        ]
+      },
+      {
+        id: 'f10',
+        name: 'AlonySky (Alony/Sky)',
+        species: 'Naga Reptil',
+        avatarColor: 'bg-purple-500/25 text-purple-300',
+        type: 'pacar',
+        traits: 'Naga ungu berpendar, tanduk & duri tajam membelok, 2 tindik emas di alis kiri, cincin manis emas ganda, kacamata persegi rantai emas.',
+        detailedBio: 'ALONY_SKY ADALAH MITRA TERKASIH (SPECIAL RELATIONSHIP) BAGI NESINEZZ. Memiliki aura naga reptilian berpakaian formal/jaket ungu kontras yang mengkilap.',
+        socials: [
+          { label: 'TikTok Partner', url: 'https://www.tiktok.com/@alonysky?_r=1&_t=ZS-96Tq784Voc3', platform: 'tiktok', color: 'bg-neutral-900' }
+        ]
+      },
+      {
+        id: 'f11',
+        name: 'Xavia "Exfive" Nürhart',
+        species: 'Akita Inu x Dragon Hybrid',
+        avatarColor: 'bg-rose-900/30 text-rose-400',
+        type: 'standard',
+        traits: 'Bulu abu putih aksen merah maroon, telinga besar, tanduk kecil, taring tajam. Tanda X & 5 di tubuh, ekor fluffy merah naga. Chaotic & protektif.',
+        detailedBio: 'Xavia melambangkan loyalitas mutlak dan sisi protektif yang meledak-ledak terhadap seluruh relasi terdekatnya.',
+        socials: [
+          { label: 'Instagram', url: 'https://www.instagram.com/exfiveturbo?igsh=ZWVnMnJqZHdrZGx0', platform: 'instagram', color: 'bg-gradient-to-tr from-purple-500 to-pink-500' }
+        ]
+      },
+      {
+        id: 'f12',
+        name: 'Eric Savior',
+        species: 'Fox',
+        avatarColor: 'bg-orange-500/20 text-orange-400',
+        type: 'standard',
+        traits: 'Warna bulu rubah oren murni dengan rambut putih bergradasi emas berkilau di ujung helai rambutnya.',
+        detailedBio: 'Eric mengekspresikan aura kehangatan fajar siber, menyajikan pembawaan tenang dan protektif.',
+        socials: [
+          { label: 'Instagram', url: 'https://www.instagram.com/ericsavior_fox?utm_source=qr&igsh=dnozYXpleDBjdGNn', platform: 'instagram', color: 'bg-gradient-to-tr from-purple-500 to-pink-500' }
+        ]
+      },
+      {
+        id: 'f13',
+        name: 'Spot Dalmatian',
+        species: 'Anjing Dalmatian',
+        avatarColor: 'bg-slate-400/20 text-white',
+        type: 'standard',
+        traits: 'Corak putih dominan bertabur bintik hitam berukuran besar. Pembawaan manja (spoiled) & penyayang di dalam lore resminya.',
+        detailedBio: 'Spot dalmatian adalah anjing ramah yang suka menjadi pusat perhatian dan mencari kehangatan pelukan di sela kesibukan.',
+        socials: [
+          { label: 'Instagram', url: 'https://www.instagram.com/spots_dalmation?igsh=MTdiNzQ2eW13MzhqZg==', platform: 'instagram', color: 'bg-gradient-to-tr from-purple-500 to-pink-500' }
+        ]
+      },
+      {
+        id: 'f14',
+        name: 'Aubrey Virtual',
+        species: 'Wolf (Serigala)',
+        avatarColor: 'bg-amber-500/20 text-amber-400',
+        type: 'sahabat',
+        traits: 'Serigala putih ekor putih, masker kain hitam khas. Mata kanan biru & mata kiri merah luka gores. Gemar mengoleksi kristal energi terang.',
+        detailedBio: 'AUBREY ADALAH SAHABAT TERDEKAT (SPECIAL BEST FRIEND) YANG SETIA. Suka mengamati pendar batu mineral kristal berkekuatan siber.',
+        socials: [
+          { label: 'TikTok Bestie', url: 'https://www.tiktok.com/@aubrey_virtual?_r=1&_t=ZS-96mv5qcqNFA', platform: 'tiktok', color: 'bg-neutral-900' }
+        ]
+      },
+      {
+        id: 'f15',
+        name: 'CapruK',
+        species: 'Hiu (Shark)',
+        avatarColor: 'bg-amber-500/20 text-amber-400',
+        type: 'sahabat',
+        traits: 'Hiu putih-biru muda dengan sirip biru muda. Kepala hiu, gigi tajam bergaya tangguh misterius bersetelan outfit gelap berkarisma.',
+        detailedBio: 'CAPRUK ADALAH SAHABAT TERBAIK (SPECIAL BEST FRIEND). Ahli penjelajah laut dalam bersenjatai keberanian and mata hitam tajam melumpuhkan lawan.',
+        socials: [
+          { label: 'YouTube Bestie', url: 'https://www.youtube.com/@capruksihiu', platform: 'youtube', color: 'bg-red-600' }
+        ]
+      },
+      {
+        id: 'f16',
+        name: 'Biorix Demos F.',
+        species: 'Tigershark',
+        avatarColor: 'bg-cyan-500/20 text-red-400',
+        type: 'standard',
+        traits: 'Hiu abu-abu gelap bergaris merah di sekujur tubuh, rambut merah berkilau jernih, fisik masculine/muscular, mata siluet hitam.',
+        detailedBio: 'Biorix perkasa dengan ekor hiu pecut elastis, menguasai pertarungan perairan dalam dengan struktur anatomi kokoh.',
+        socials: [
+          { label: 'Instagram', url: 'https://www.instagram.com/thereal_fxu?igsh=c2IyYmNsZ25ndWQ5', platform: 'instagram', color: 'bg-gradient-to-tr from-purple-500 to-pink-500' }
+        ]
+      },
+      {
+        id: 'f17',
+        name: 'Reykie',
+        species: 'Tiger (Harimau)',
+        avatarColor: 'bg-cyan-500/20 text-[#06e3ff]',
+        type: 'standard',
+        traits: 'Tiger berparas imut, doyan rebahan tidur lelap. Jangan terkecoh keimutannya jika tidak ingin ditelan bulat-bulat.',
+        detailedBio: 'Reykie adalah harimau santai yang menyenangi kedamaian bantal guling digital, namun siap mempertahankan integritas teritorinya.',
+        socials: [
+          { label: 'TikTok Tiger', url: 'https://www.tiktok.com/@something_spy?_r=1&_t=ZS-96nRfETvEzF', platform: 'tiktok', color: 'bg-neutral-900' }
+        ]
+      }
+    ];
+
+    const OWNER_SOCIALS = [
+      { name: "GitHub Repository", username: "NesiNezz", url: "https://github.com/NesiNezz", color: "from-neutral-900 to-slate-800", desc: "Explore our open-source cyber projects, terminal widgets, and retro game prototypes." },
+      { name: "Instagram Channel", username: "@NesiNezz.fur", url: "https://instagram.com/NesiNezz", color: "from-purple-900 to-pink-700", desc: "Follow our fluffy developments, convention memories, suits, and daily code logs." },
+      { name: "YouTube Workspace", username: "NesiNezz Terminal", url: "https://youtube.com/@NesiNezz", color: "from-red-950 to-red-600", desc: "Video game development progress, audio synth designs, and gray hat tutorials." },
+      { name: "Telegram Terminal", username: "t.me/NesiNezz_Core", url: "https://t.me/NesiNezz", color: "from-sky-950 to-sky-600", desc: "Secure instant broadcasts, emergency patches, and server telemetry logs." }
+    ];
+
+    const ROLES_LIST = [
+      { role: "Owner", level: "Level 10 (Master Core)", specialty: "Strategic Direction & Design Identity", systemCoverage: "100% (Universal Administrator)" },
+      { role: "Programmer", level: "Level 8 (Engine dev)", specialty: "TypeScript, React Virtual DOM, Python Automation", systemCoverage: "92% (Core Codebase Base)" },
+      { role: "Editor", level: "Level 7 (Assets/vido)", specialty: "Aesthetic Alignment, Audio Mastering", systemCoverage: "78% (Video & Visual Layer)" },
+      { role: "Fursuiters", level: "Level 9 (Hobbyist)", specialty: "Suite Design, Custom Mascot Expression", systemCoverage: "50% (Creative Furry Guild)" },
+      { role: "Administrator", level: "Level 9 (Main Host)", specialty: "Linux Server Clustering, SSH Tunneling", systemCoverage: "95% (Global Port Control)" },
+      { role: "Web Development", level: "Level 8 (Web Architect)", specialty: "Vite Pipeline, Glassmorphism CSS, Responsive Grid", systemCoverage: "89% (Portlets Interface)" },
+      { role: "Gray Hat", level: "Level 6 (Sec Analyst)", specialty: "Database Pen-Testing, Binary Integrity Audit", systemCoverage: "64% (Sandboxed Quarantine)" }
+    ];
+
+    const FAQS = [
+      {
+        q: "Siapa itu NesiNezz?",
+        a: "NesiNezz adalah seorang programmer antusias, desainer, hobiis Furry, dan administrator sistem cerdas yang memadukan estetika retro cyberpunk dengan fungsionalitas modern."
+      },
+      {
+        q: "Mengapa desain web ini bertema cyber database aman?",
+        a: "Web ini dirancang menyerupai terminal komputer rahasia yang aman diakses (Safe Retro Access Directory). Tujuannya adalah menghadirkan nuansa eksklusif, retro, dan aman bagi personifikasi kreatif pemiliknya."
+      },
+      {
+        q: "Apakah seluruh media sosial terdaftar asli?",
+        a: "Ya, seluruh link sosial mengarah langsung ke akun resmi NesiNezz yang dijaga aman di bawah protokol integrasi digital."
+      },
+      {
+        q: "Bagaimana cara mendownload modul HTML mandiri (offline)?",
+        a: "Anda cukup menekan tombol 'Download Standalone HTML' di bagian footer halaman web ini. Tombol tersebut secara otomatis memaketkan seluruh asset, kode, dan fungsionalitas ke dalam 1 file HTML tunggal untuk Anda jalankan luring di komputer Anda menggunakan VS Code."
+      }
+    ];
+
+    function StandaloneApp() {
+      const [introFinished, setIntroFinished] = useState(false);
+      const [loadingPercent, setLoadingPercent] = useState(0);
+      const [loadingLogs, setLoadingLogs] = useState([]);
+      const [accessGranted, setAccessGranted] = useState(false);
+
+      const [isPlaying, setIsPlaying] = useState(false);
+      const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+      const [volume, setVolume] = useState(0.5);
+      const [isMuted, setIsMuted] = useState(false);
+
+      const [currentTab, setCurrentTab] = useState('home');
+      const [realTimeClock, setRealTimeClock] = useState('');
+      const [faqExpanded, setFaqExpanded] = useState(null);
+      const [selectedFriend, setSelectedFriend] = useState(null);
+
+      const [isConnectingSocials, setIsConnectingSocials] = useState(true);
+      const [socialProgress, setSocialProgress] = useState(0);
+      const [socialLogs, setSocialLogs] = useState([]);
+
+      const [simulatedBrowserUrl, setSimulatedBrowserUrl] = useState(null);
+      const [simulatedBrowserTitle, setSimulatedBrowserTitle] = useState('');
+
+      const audioRef = useRef(null);
+
+      // System Ticking clock
+      useEffect(() => {
+        const updateClock = () => {
+          const now = new Date();
+          setRealTimeClock(now.toLocaleDateString('id-ID', {
+            weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
+          }) + " - " + now.toTimeString().split(' ')[0] + " WIB");
+        };
+        updateClock();
+        const t = setInterval(updateClock, 1000);
+        return () => clearInterval(t);
+      }, []);
+
+      // Decryption simulation
+      useEffect(() => {
+        if (introFinished) return;
+        const messages = [
+          "SYSTEM STANDALONE INGRESS ENGAGED...",
+          "BYPASS RECOVERY PROTOCOLS...",
+          "VERIFYING CHECKSUM CORES [OK]",
+          "DEPLOYING CYBER WOLF SCHEMATICS..."
+        ];
+        const intv = setInterval(() => {
+          setLoadingPercent(prev => {
+            if (prev >= 100) {
+              clearInterval(intv);
+              setAccessGranted(true);
+              setTimeout(() => setIntroFinished(true), 1200);
+              return 100;
+            }
+            const logsCount = Math.floor((prev / 100) * messages.length);
+            if (messages[logsCount] && !loadingLogs.includes(messages[logsCount])) {
+              setLoadingLogs(l => [...l, messages[logsCount]]);
+            }
+            return prev + 6;
+          });
+        }, 110);
+        return () => clearInterval(intv);
+      }, [introFinished, loadingLogs]);
+
+      // Connect channels
+      useEffect(() => {
+        if (currentTab !== 'connection') {
+          setIsConnectingSocials(true);
+          setSocialProgress(0);
+          setSocialLogs([]);
+          return;
+        }
+        const sLogs = ["CONNECTING BEACONS...", "INTEGRATING API HANDLES [OK]", "PREPARING BRANDING STACKS..."];
+        const intv = setInterval(() => {
+          setSocialProgress(prev => {
+            if (prev >= 100) {
+              clearInterval(intv);
+              setTimeout(() => setIsConnectingSocials(false), 300);
+              return 100;
+            }
+            const pos = Math.floor((prev / 100) * sLogs.length);
+            if (sLogs[pos] && !socialLogs.includes(sLogs[pos])) {
+              setSocialLogs(l => [...l, sLogs[pos]]);
+            }
+            return prev + 10;
+          });
+        }, 120);
+        return () => clearInterval(intv);
+      }, [currentTab]);
+
+      // Sync player
+      useEffect(() => {
+        if (audioRef.current) {
+          audioRef.current.volume = isMuted ? 0 : volume;
+          if (isPlaying) {
+            audioRef.current.play().catch(() => setIsPlaying(false));
+          } else {
+            audioRef.current.pause();
+          }
+        }
+      }, [isPlaying, volume, isMuted, currentTrackIndex]);
+
+      return (
+        <div className="w-full">
+          <audio ref={audioRef} src={PLAYLIST[currentTrackIndex].url} onEnded={() => setCurrentTrackIndex((currentTrackIndex + 1) % PLAYLIST.length)} />
+
+          {!introFinished && (
+            <div className="fixed inset-0 bg-[#020509] z-50 flex flex-col justify-center items-center px-4">
+              <div className="relative max-w-xl w-full p-6 rounded bg-neutral-950 border border-cyan-500/40 text-center space-y-4 shadow-2xl">
+                {/* Gold decoration corner */}
+                <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-amber-400" />
+                <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-amber-400" />
+                <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-amber-400" />
+                <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-amber-400" />
+
+                <h1 className="text-white font-mono text-lg tracking-widest font-bold">DECRYPTING OFFLINE DATABASE...</h1>
+                <div className="h-32 bg-black/50 border border-white/10 rounded p-3 font-mono text-xs text-left text-cyan-400 overflow-y-auto scrollbar-thin">
+                  {loadingLogs.map((log, i) => <div key={i} className="mb-1">▶ {log}</div>)}
+                </div>
+                <div className="w-full bg-neutral-900 h-4 border border-white/10 rounded overflow-hidden">
+                  <div className="bg-cyan-400 h-full transition-all duration-100" style={{ width: loadingPercent + "%" }} />
+                </div>
+                <button onClick={() => setIntroFinished(true)} className="px-3 py-1 border border-cyan-400/50 text-cyan-400 text-xs font-mono rounded hover:bg-cyan-500/20">
+                  BYPASS LOADING
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Site Header */}
+          <header className="relative w-full border border-cyan-500/30 rounded-lg p-4 bg-neutral-950/80 backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-amber-400" />
+            <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t-2 border-r-2 border-amber-400" />
+            <div className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b-2 border-l-2 border-amber-400" />
+            <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b-2 border-r-2 border-amber-400" />
+            
+            <div className="flex items-center gap-3">
+              <div className="p-2 border border-cyan-400 text-cyan-400 font-mono text-sm leading-none">[NESI_DB]</div>
+              <div>
+                <h1 className="text-white font-mono font-bold tracking-widest text-sm md:text-base uppercase">NesiNezz's Website <span className="text-cyan-400">connection</span></h1>
+                <p className="text-[10px] text-cyan-400/80 font-mono uppercase">Offline Copy // Standalone Client</p>
+              </div>
+            </div>
+
+            {/* Offline Music controls */}
+            <div className="flex items-center gap-3 bg-neutral-900/60 border border-white/10 p-2 rounded-md">
+              <span className="text-[10px] text-neutral-400 font-mono">TRACK:</span>
+              <span className="text-xs text-white font-bold font-mono truncate max-w-[120px]">{PLAYLIST[currentTrackIndex].title}</span>
+              <button onClick={() => setIsPlaying(!isPlaying)} className="p-1 px-3.5 rounded bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/40 text-xs font-mono">
+                {isPlaying ? "PAUSE" : "PLAY"}
+              </button>
+              <input type="range" min="0" max="1" step="0.1" value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))} className="w-16 accent-cyan-400" />
+            </div>
+
+            <div className="font-mono text-xs text-white bg-black/40 px-3 py-1.5 rounded border border-white/10">
+              {realTimeClock || "CLOCK RETRIEVING"}
+            </div>
+          </header>
+
+          {/* Navigation Matrix */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-4">
+            <nav className="col-span-1 lg:col-span-3 flex lg:flex-col gap-2">
+              <button onClick={() => { setCurrentTab('home'); setSelectedFriend(null); }} className={"w-full py-3 px-4 rounded text-xs font-mono text-left uppercase border transition " + (currentTab === 'home' ? "bg-cyan-950/50 border-cyan-400 text-white shadow" : "border-white/10 bg-neutral-950/30 text-neutral-400")}>
+                [01] Home Tab
+              </button>
+              <button onClick={() => { setCurrentTab('friendlist'); setSelectedFriend(null); }} className={"w-full py-3 px-4 rounded text-xs font-mono text-left uppercase border transition " + (currentTab === 'friendlist' ? "bg-cyan-950/50 border-cyan-400 text-white shadow" : "border-white/10 bg-neutral-950/30 text-neutral-400")}>
+                [02] Friendlist Tab
+              </button>
+              <button onClick={() => { setCurrentTab('connection'); setSelectedFriend(null); }} className={"w-full py-3 px-4 rounded text-xs font-mono text-left uppercase border transition " + (currentTab === 'connection' ? "bg-cyan-950/50 border-cyan-400 text-white shadow" : "border-white/10 bg-neutral-950/30 text-neutral-400")}>
+                [03] Connection Tab
+              </button>
+              <button onClick={() => { setCurrentTab('profile'); setSelectedFriend(null); }} className={"w-full py-3 px-4 rounded text-xs font-mono text-left uppercase border transition " + (currentTab === 'profile' ? "bg-cyan-950/50 border-cyan-400 text-white shadow" : "border-white/10 bg-neutral-950/30 text-neutral-400")}>
+                [04] Profile Tab
+              </button>
+
+              <div className="hidden lg:block border border-white/10 rounded-lg p-3 bg-neutral-950/20 font-mono text-[10px] text-slate-400 space-y-1 mt-auto">
+                <span className="text-[#06e3ff] font-bold block mb-1">LOCAL CONFIGS:</span>
+                <div>PORT: STANDALONE</div>
+                <div>SECURE ENGINE: LOCALHOST</div>
+                <div>STATE: SECURE COUPLER</div>
+              </div>
+            </nav>
+
+            {/* Core Box context */}
+            <div className="col-span-1 lg:col-span-9 bg-neutral-900/10 border border-white/10 p-5 rounded-lg min-h-[400px] relative backdrop-blur">
+              <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-amber-400" />
+              <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-amber-400" />
+              <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-amber-400" />
+              <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-amber-400" />
+              
+              {currentTab === 'home' && (
+                <div className="space-y-4">
+                  <h2 className="font-mono text-white text-base border-b border-cyan-500/20 pb-2">MAIN RETRO MATRIX ABOUT</h2>
+                  <div className="p-4 bg-cyan-950/40 border border-cyan-400/30 rounded">
+                    <h3 className="text-white font-mono text-xs mb-2">Tentang Website Standalone</h3>
+                    <p className="text-xs text-slate-300">
+                      Tabel luring portofolio mandiri untuk offline VS Code. Dilengkapi fungsionalitas murni, clock sirkulasi WIB lokal, and status role table lengkap.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                    <div className="p-3 bg-neutral-900/60 border border-white/5 rounded relative">
+                      <span className="text-amber-400 block mb-1">STABLES</span>
+                      <div>React 18 Production Engine</div>
+                      <div>Tailwind CSS Styling Module</div>
+                    </div>
+                    <div className="p-3 bg-neutral-900/60 border border-white/5 rounded relative">
+                      <span className="text-cyan-400 block mb-1">CONTRIBUTORS</span>
+                      <div>NesiNezz (Owner)</div>
+                      <div>Offline Core Sandboxing</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 pt-3">
+                    <h3 className="text-xs font-mono text-white">X_FAQ ARSIP</h3>
+                    {FAQS.map((faq, i) => (
+                      <div key={i} className="p-3 border border-white/5 bg-neutral-900/30 rounded text-xs leading-relaxed">
+                        <strong className="text-cyan-300 block mb-1">[Q] {faq.q}</strong>
+                        <p className="text-slate-300 mt-1">{faq.a}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {currentTab === 'friendlist' && (
+                <div className="space-y-4">
+                  <h2 className="font-mono text-white text-base border-b border-cyan-500/20 pb-2">FRIENDLIST RELATION SHIELDS</h2>
+                  <div className="relative">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {FRIENDS_LIST.map(friend => {
+                        const isSahabat = friend.type === 'sahabat';
+                        const isPacar = friend.type === 'pacar';
+                        const isSelected = selectedFriend?.id === friend.id;
+
+                        let borderTheme = isSelected
+                          ? "border-cyan-400 bg-neutral-900 shadow-[0_0_15px_rgba(6,182,212,0.3)] col-span-1 md:col-span-2 border-2 text-left"
+                          : "border-cyan-500/30 hover:border-cyan-400 bg-neutral-900/40 col-span-1 text-left";
+                        
+                        if (isSahabat) {
+                          borderTheme = isSelected
+                            ? "border-amber-400 bg-neutral-900 shadow-[0_0_20px_rgba(245,158,11,0.35)] col-span-1 md:col-span-2 border-2 text-left"
+                            : "border-amber-400 hover:border-amber-300 bg-[#1e170a]/10 col-span-1 text-left";
+                        }
+                        if (isPacar) {
+                          borderTheme = isSelected
+                            ? "border-pink-500 bg-neutral-900 shadow-[0_0_25px_rgba(236,72,153,0.4)] col-span-1 md:col-span-2 border-2 text-left"
+                            : "border-pink-500 hover:border-pink-400 bg-[#1e170a]/5 col-span-1 text-left";
+                        }
+
+                        return (
+                          <div 
+                            key={friend.id} 
+                            onClick={() => setSelectedFriend(isSelected ? null : friend)} 
+                            className={"p-4 rounded border cursor-pointer select-none transition duration-300 " + borderTheme}
+                          >
+                            <div className="flex gap-3 items-center">
+                              <div className="h-10 w-10 rounded-full border border-white/10 flex items-center justify-center font-mono font-bold text-xs capitalize text-white bg-neutral-800 shrink-0">
+                                {friend.name.slice(0, 2)}
+                              </div>
+                              <div className="flex-1">
+                                <h4 className="text-white font-mono font-bold text-sm flex items-center gap-1">
+                                  {friend.name}
+                                </h4>
+                                <div className="text-[10px] text-slate-400 font-mono">Spesies: {friend.species}</div>
+                              </div>
+                            </div>
+
+                            {!isSelected && (
+                              <>
+                                <p className="text-[11px] text-slate-300 mt-2.5 line-clamp-2 font-mono bg-black/20 p-2 rounded border border-white/5">{friend.traits}</p>
+                                <span className="text-[9px] text-[#06e3ff] block text-right mt-2 font-mono">EXPAND SYSTEM CARD ▼</span>
+                              </>
+                            )}
+
+                            {isSelected && (
+                              <div className="mt-4 pt-3 border-t border-white/10 space-y-3">
+                                <div>
+                                  <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wider block mb-1">CIRI-CIRI LENGKAP:</span>
+                                  <p className="text-xs text-amber-300/90 font-mono bg-amber-950/20 p-2.5 rounded border border-amber-500/20 leading-relaxed">"{friend.traits}"</p>
+                                </div>
+                                <div>
+                                  <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wider block mb-1">ARSIP DATABASE:</span>
+                                  <p className="text-xs text-slate-300 leading-relaxed bg-black/40 p-2.5 rounded border border-white/5 font-mono">{friend.detailedBio}</p>
+                                </div>
+                                <div>
+                                  <span className="text-[9px] font-mono text-[#06e3ff] uppercase tracking-wider block mb-1 font-bold">INTEGRASI LINK:</span>
+                                  <div className="flex flex-wrap gap-2 pt-1 font-mono">
+                                    {friend.socials.map((s, idx) => (
+                                      <button 
+                                        key={idx} 
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          alert("Simulasi membuka link: " + s.url);
+                                        }} 
+                                        className="p-1 px-3 bg-[#5865F2] text-white rounded text-[11px] font-semibold flex items-center gap-1 hover:brightness-115 transition"
+                                      >
+                                        <span>{s.label}</span>
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                                <div className="mt-4 pt-3 border-t border-white/10 flex justify-between items-center text-[9px] font-mono text-neutral-500">
+                                  <span>SESSION DATA: {friend.id.toUpperCase()}</span>
+                                  <button 
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setSelectedFriend(null);
+                                    }} 
+                                    className="text-white hover:text-rose-400 font-semibold transition"
+                                  >
+                                    ◀ COLLAPSE DETAILS
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+
+                  </div>
+                </div>
+              )}
+
+              {currentTab === 'connection' && (
+                <div className="space-y-4">
+                  <h2 className="font-mono text-white text-base border-b border-cyan-500/20 pb-2">COMMUNICATION PLATFORMS</h2>
+                  {isConnectingSocials ? (
+                    <div className="p-8 text-center border border-cyan-400/30 rounded bg-black/45">
+                      <div className="text-cyan-400 font-mono animate-pulse text-xs">SECURE COUPLING SIMULATION IN ACTION (STANDALONE)...</div>
+                      <button onClick={() => setIsConnectingSocials(false)} className="mt-4 px-3 py-1 bg-cyan-900/40 border border-cyan-400 text-white rounded font-mono text-xs">Bypass Loading</button>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {OWNER_SOCIALS.map((soc, i) => (
+                        <div key={i} onClick={() => alert("Coupler Hub: " + soc.url)} className={"p-4 rounded-lg bg-gradient-to-br " + soc.color + " border border-white/10 cursor-pointer hover:border-cyan-400 transition"}>
+                          <h4 className="text-white font-mono font-bold text-xs">{soc.name}</h4>
+                          <span className="text-[10px] text-cyan-300 font-mono block">@{soc.username}</span>
+                          <p className="text-[11px] text-slate-200 mt-2">{soc.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {currentTab === 'profile' && (
+                <div className="space-y-4 font-mono">
+                  <h2 className="text-white text-base border-b border-cyan-500/20 pb-2">PROFILE INTEGRATIONS</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div className="p-4 bg-neutral-900/60 rounded border border-cyan-500/30 text-center relative">
+                      <div className="w-16 h-16 rounded-full bg-slate-500 mx-auto mb-2 flex items-center justify-center font-bold text-white text-lg overflow-hidden border border-cyan-400">
+                        <img src="https://picsum.photos/seed/nesinezz/150/150" class="w-full h-full object-cover" />
+                      </div>
+                      <h4 className="text-white font-bold">NESINEZZ</h4>
+                      <p className="text-[9px] text-cyan-400">Wolf Ear Enabled Profile</p>
+                    </div>
+                    <div className="p-4 bg-neutral-900/30 rounded border border-white/10 md:col-span-2 space-y-2 text-xs">
+                      <div>TEL: <strong className="text-cyan-300 tracking-widest">+62xxxxxxxxx</strong></div>
+                      <div>EMAIL: <strong className="text-indigo-300">Nesxxxxx@gmail.com</strong></div>
+                      <p className="text-slate-400 text-[11px] leading-relaxed">Programmer hobiis, furry, gray-hat hacker, pembuat portfolio dengan visual cyberglow emas-cyan mantap.</p>
+                    </div>
+                  </div>
+
+                  {/* Adaptive Roles Matrix with translucent white 40% rows as requested */}
+                  <div className="pt-2">
+                    <h3 className="text-xs text-amber-300 mb-2">TABEL ROLES (MATRIKS)</h3>
+                    <div className="overflow-x-auto w-full scrollbar-thin">
+                      <table className="w-full text-left text-xs border-collapse min-w-[500px]">
+                        <thead>
+                          <tr className="bg-white/10 text-cyan-400 border-b border-white/20">
+                            <th className="p-2 text-[10px]">Role</th>
+                            <th className="p-2 text-[10px]">Clearance Level</th>
+                            <th className="p-2 text-[10px]">Area Specialty</th>
+                            <th className="p-2 text-[10px]">System Coverage</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-white/5 bg-neutral-950/20">
+                          {ROLES_LIST.map((row, i) => (
+                            <tr key={i} className="hover:bg-cyan-500/10">
+                              <td className="p-2.5 font-bold text-white border-r border-white/5">◆ {row.role}</td>
+                              <td className="p-2.5 text-cyan-300 border-r border-white/5">{row.level}</td>
+                              <td className="p-2.5 text-slate-300 border-r border-white/5">{row.specialty}</td>
+                              <td className="p-2.5 text-amber-400 font-bold">{row.systemCoverage}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          </div>
+
+          <footer className="relative w-full border border-white/5 rounded-lg p-3 bg-neutral-950/60 text-center font-mono text-[9px] text-neutral-400 mt-4">
+            <div>© 2026 NESINEZZ OFFLINE CONSOLE - DOUBLE CLICK COMPATIBLE</div>
+          </footer>
+        </div>
+      );
+    }
+
+    const container = document.getElementById('standalone-root');
+    const root = ReactDOM.createRoot(container);
+    root.render(<StandaloneApp />);
+  </script>
+</body>
+</html>
